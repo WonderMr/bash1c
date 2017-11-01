@@ -33,7 +33,7 @@ perl -ne '                                          #perl умеет работ�
                $dur_ttl,
                $cnt_ttl,
                $dur_ttl/$cnt_ttl);                  #формирую заголовок
-        foreach $k (sort {$cnt{$b} <=> $cnt{$a}} keys %cnt) {
+        foreach $k (sort {$dur{$b} <=> $dur{$a}} keys %dur) {
             printf "[][][] TIME(ms):%d [][][] TIME(%):%.2f [][][] COUNT:%d [][][] COUNT(%):%.2f [][][] BY:%s \r\n",
             $dur{$k},
             $dur{$k}/($dur_ttl>0?$dur_ttl:1)*100,
