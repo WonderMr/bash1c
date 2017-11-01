@@ -1,7 +1,7 @@
 time grep -r ".*" -H /c/1c_logs/logs/*/*.log | \
 perl -ne '
     if(/\d\d:\d\d\.\d+/){
-        if(/^.*EXCP.*Descr=.+?\w=/){                #первоначальный отбор
+        if(/^.*,CALL.*Context=.+/){                 #первоначальный отбор
             $_=~s/\r*\n/ /g;                        #\r*\n для заголовочных строк
             $_=~s/\s+/ /g;                          #сворачиваю много пробелов в один
             while(s/^.*_(\d+)\/(\d{2})(\d{2})(\d{2})(\d{2})\.log\:(\d+:\d+\.\d+)\-(\d+),(\w+),(\d+)//){
@@ -22,9 +22,7 @@ perl -ne '
     }END{print "\r\n"}                              #надо поставить, чтобы последняя строка в обработку попала
 ' | \
 perl -ne '                                          #perl умеет работать как AWK
-    $_=~s/\[\w*::[\w:]*\%*\d+\]:\w+/{IPV6}/g;       #ipv6 pattern
-    $_=~s/\d+\.\d+\.\d+\.\d+\:\d+/{IPV4}/g;         #ipv4 pattern
-    if(/dur=(\d+),evnt=EXCP.*Descr=(.*)/){
+    if(/dur=(\d+),evnt=CALL.*Context=(.*)?\w=/){
         $dur_ttl+=$1/1000;
         $dur{$2}+=$1/1000;
         $cnt_ttl+=1;
@@ -32,10 +30,10 @@ perl -ne '                                          #perl умеет работ�
     }
     END{
         printf("=====TIME TOTAL(ms):%.2f      COUNT:%d      AVG(ms):%.2f\r\n",
-               $dur_ttl,
-               $cnt_ttl,
-               $dur_ttl/$cnt_ttl);                  #формирую заголовок
-        foreach $k (sort {$cnt{$b} <=> $cnt{$a}} keys %cnt) {
+            $dur_ttl,
+            $cnt_ttl,
+            $dur_ttl/$cnt_ttl);                  #формирую заголовок
+        foreach $k (sort {$dur{$b} <=> $dur{$a}} keys %dur) {
             printf "[][][] TIME(ms):%d [][][] TIME(%):%.2f [][][] COUNT:%d [][][] COUNT(%):%.2f [][][] BY:$k \r\n",
             $dur{$k},
             $dur{$k}/($dur_ttl>0?$dur_ttl:1)*100,
