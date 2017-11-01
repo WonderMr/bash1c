@@ -1,7 +1,7 @@
 time grep -r ".*" -H /c/1c_logs/logs/*/*.log | \
 perl -ne '
     if(/\d\d:\d\d\.\d+/){
-        if(/^.*,CALL.*Context=.+/){                 #первоначальный отбор
+        if(/^.*,CALL.*Context=/){                   #первоначальный отбор
             $_=~s/\r*\n/ /g;                        #\r*\n для заголовочных строк
             $_=~s/\s+/ /g;                          #сворачиваю много пробелов в один
             while(s/^.*_(\d+)\/(\d{2})(\d{2})(\d{2})(\d{2})\.log\:(\d+:\d+\.\d+)\-(\d+),(\w+),(\d+)//){
@@ -22,7 +22,7 @@ perl -ne '
     }END{print "\r\n"}                              #надо поставить, чтобы последняя строка в обработку попала
 ' | \
 perl -ne '                                          #perl умеет работать как AWK
-    if(/dur=(\d+),evnt=CALL.*Context=(.*)?\w=/){
+    if(/dur=(\d+),evnt=CALL.*Context=(.*),Interface=/){
         $dur_ttl+=$1/1000;
         $dur{$2}+=$1/1000;
         $cnt_ttl+=1;
