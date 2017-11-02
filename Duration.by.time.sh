@@ -1,5 +1,5 @@
 echo "Распределение продолжительности соединений с течением времени."
-echo "Отбираются события завершения соединений (вся длительность соединения фиксируется при его завершении)"
+echo "Отбирается событие завершения соединения (вся длимтельность соединения фиксируется на его завершении)"
 time grep -r ".*" -H /c/v8/logs/*/*.log  | \
 perl -ne '
     s/\xef\xbb\xbf//g;                              #BOM - обязательно в начале, иначе с певой строкой будут проблемы
@@ -21,11 +21,11 @@ perl -ne '
         print;
     }END{print "\r\n"}                              #надо поставить, чтобы последняя строка в обработку попала
 ' | \perl -ne '                                      #perl умеет работать как AWK
-    if(/time=(\d+\:\d+).*dur=(\d+),evnt=CONN,.*Txt=.*connection\sclosed/){
+    if(/dt=(\d+.\d+\.\d+).*time=(\d+\:\d+).*dur=(\d+),evnt=CONN,.*Txt=.*connection\sclosed/){
         $dur_ttl+=$2/1000;
-        $dur{$1}+=$2/1000;
+        $dur{$1." ".$2}+=$3/1000;
         $cnt_ttl+=1;
-        $cnt{$1}+=1;
+        $cnt{$1." ".$2}+=1;
         #print $_."\r\n";
     }
     END{
@@ -33,7 +33,7 @@ perl -ne '
                $dur_ttl,
                $cnt_ttl,
                $dur_ttl/$cnt_ttl);              #формирую заголовок
-        foreach $k (sort {$dur{$b} <=> $dur{$a}} keys %dur) {        
+        foreach $k (sort {$cnt{$b} <=> $cnt{$a}} keys %cnt) {
             printf "[][][] TIME(ms):%d [][][] TIME(%):%.2f [][][] COUNT:%d [][][] COUNT(%):%.2f [][][] AVG(ms):%d [][][] BY:%s \r\n",
             $dur{$k},
             $dur{$k}/$dur_ttl*100,
