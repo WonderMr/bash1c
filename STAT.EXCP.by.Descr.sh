@@ -20,8 +20,6 @@ perl -ne '
         print;
     }END{print "\r\n"}                              #надо поставить, чтобы последняя строка в обработку попала
 ' | \
-grep "An operation was attempted on something that is not a socket" 
-exit
 perl -ne '                                          #perl умеет работать как AWK
     s/\[\w*::[\w:]*\%*\d+\]:\w+/{IPV6}/g;           				#ipv6 pattern
     s/\d+\.\d+\.\d+\.\d+\:\d+/{IPV4}/g;             				#ipv4 pattern
