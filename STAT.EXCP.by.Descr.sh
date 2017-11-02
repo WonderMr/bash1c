@@ -1,5 +1,5 @@
 echo "Количество событий EXCP в разрезе контекстов"
-time grep -r ".*" -H /c/v8/logs/*/*.log  | \
+time grep -r ".*" -H /c/1c_logs/v8/logs/*/*.log  | \
 perl -ne '
     s/\xef\xbb\xbf//g;                              #BOM - обязательно в начале, иначе с певой строкой будут проблемы
     if(/\d\d:\d\d\.\d+-\d+,(\w+),/){                #если в строке есть идентификатор начала строки и это наш тип события
@@ -20,10 +20,13 @@ perl -ne '
         print;
     }END{print "\r\n"}                              #надо поставить, чтобы последняя строка в обработку попала
 ' | \
+grep "An operation was attempted on something that is not a socket" 
+exit
 perl -ne '                                          #perl умеет работать как AWK
-    s/\[\w*::[\w:]*\%*\d+\]:\w+/{IPV6}/g;           #ipv6 pattern
-    s/\d+\.\d+\.\d+\.\d+\:\d+/{IPV4}/g;             #ipv4 pattern
-    s/начат:\s+\d\d\.\d\d\.\d{4}\s+в\s+\d+\.\d+\.\d+/{datetime}/g;             #Date time
+    s/\[\w*::[\w:]*\%*\d+\]:\w+/{IPV6}/g;           				#ipv6 pattern
+    s/\d+\.\d+\.\d+\.\d+\:\d+/{IPV4}/g;             				#ipv4 pattern
+	s/[\w\d]{8}-[\w\d]{4}-[\w\d]{4}-[\w\d]{4}-[\w\d]{12}/{UUID}/g;	#compact all uuids
+    s/начат:(\s+\d\d\.\d\d\.\d{4}\s+в\s+\d+:\d+\:\d+)/{DtTm}/g;		#Date time
     if(/dur=(\d+),evnt=EXCP.*Descr=(.*)/){
         $dur_ttl+=$1/1000;
         $dur{$2}+=$1/1000;
