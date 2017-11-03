@@ -21,10 +21,10 @@ perl -ne '
     }END{print "\r\n"}                              #надо поставить, чтобы последняя строка в обработку попала
 ' | \
 perl -ne '                                          #perl умеет работать как AWK
-    s/\[\w*::[\w:]*\%*\d+\]:\w+/{IPV6}/g;           				#ipv6 pattern
-    s/\d+\.\d+\.\d+\.\d+\:\d+/{IPV4}/g;             				#ipv4 pattern
-	s/[\w\d]{8}-[\w\d]{4}-[\w\d]{4}-[\w\d]{4}-[\w\d]{12}/{UUID}/g;	#compact all uuids
-    s/начат:(\s+\d\d\.\d\d\.\d{4}\s+в\s+\d+:\d+\:\d+)/{DtTm}/g;		#Date time
+    s/\[\w*::[\w:]*\%*\d+\]:\w+/{IPV6}/g;                           #ipv6 pattern
+    s/\d+\.\d+\.\d+\.\d+\:\d+/{IPV4}/g;                             #ipv4 pattern
+    s/[\w\d]{8}-[\w\d]{4}-[\w\d]{4}-[\w\d]{4}-[\w\d]{12}/{UUID}/g;    #compact all uuids
+    s/начат:(\s+\d\d\.\d\d\.\d{4}\s+в\s+\d+:\d+\:\d+)/{DtTm}/g;        #Date time
     if(/dur=(\d+),evnt=EXCP.*Descr=(.*)/){
         $dur_ttl+=$1/1000;
         $dur{$2}+=$1/1000;
