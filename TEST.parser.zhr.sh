@@ -6,7 +6,7 @@ perl -ne 'BEGIN{
     if(/\{(\d{8})\d{6},\w,/){
         #print "ITS HEADER\r\n";
         $nm=$1;
-        $prline=~s/,// if($fh ne "c:\\123\\".$nm."000000.lgp");                
+        $prline=~s/,\r\n// if($fh ne "c:\\123\\".$nm."000000.lgp");                
         open(my $wrt,">>",$fh);        
         $fh="c:\\123\\".$nm."000000.lgp";
         $_=$hdr.$_ if(!(-f $fh));        
