@@ -23,13 +23,13 @@ perl -ne '
 perl -ne '{
     s/\r\n//g;
     #if(!/CONN/){
-    if(/EXCP/ && /time=17:[2-9]\d/){
+    #if(/EXCP/ && /time=17:[2-9]\d/){
         for (split /(?=\,\w+:*\w*=)/, $_){
             s/,//g;
-            print "\r\n".$_."  [][][] " if(/dt=/);
-            print $_."  [][][] " if(!/dt=/);
+            print "\r\n".$_."   [][][]   " if(/dt=/);
+            print $_."   [][][]   " if(!/dt=/);
         }
-    }
+    #}
 }' |\
 sort |\
 head -n 1500
