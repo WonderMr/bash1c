@@ -24,9 +24,7 @@ perl -ne '{
 	for (split /(?=\,\w+:*\w*=)/, $_){
 		s/,//g;
 		print "\r\n".$_."  [][][] " if(/dt=/);
-		print $_."  [][][] " if(/time=/);
-		print $_."  [][][] " if(/evnt=/);
-		print $_ if(/Context=/);
+		print $_."  [][][] " if(!/dt=/);
 	}
 }' |\
 head -n 150
