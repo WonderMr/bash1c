@@ -1,5 +1,5 @@
 use File::stat;
-my $folder = '/C/1C/Ddd/zhu/do/';
+my $folder = '/C/1C/Ddd/zhu/fin/';
 my $lgf = $folder.'1Cv8.lgf';
 open($fh, '<:encoding(UTF-8)', $lgf) or die "Could not open file '$lgf' $!";
 while (<$fh>) {
@@ -25,7 +25,8 @@ foreach my $lgp(<$folder*.lgp>) {
     foreach $k(sort (keys(%cnt))){
         $ttl+=$cnt{$k};
         if ($k=~/(\d{4})(\d{2})(\d{2})(\d{2})/){
-            print $fout "$1.$2.$3 $4:00:00,$ttl\r\n";
+            print $fout "$1.$2.$3 $4:00:00,$ttl\r\n" if($ttl>0);
+            print $fout "$1.$2.$3 $4:00:00,0\r\n"  if($ttl<0);#отрицательного количества быть не может
         }
     }
 }
