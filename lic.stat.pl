@@ -1,5 +1,5 @@
 use File::stat;
-my $folder = '/C/1C/Ddd/zhu/fin/';
+my $folder = '/C/1C/Ddd/zhu/erp/';
 my $lgf = $folder.'1Cv8.lgf';
 open($fh, '<:encoding(UTF-8)', $lgf) or die "Could not open file '$lgf' $!";
 while (<$fh>) {
