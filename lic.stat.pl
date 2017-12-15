@@ -22,11 +22,10 @@ foreach my $lgp(<$folder*.lgp>) {
         $cnt{$1}+=1 if ($item=~/\{(\d{12})\d{2},\w,\r*\n\{[0-9abcdef]+,[0-9abcdef]+\},\d+,\d+,[$id_1cv8c,$id_1cv8,$id_webc,$id_dsgnr],\d+,[$id_start],/g);
         $cnt{$1}-=1 if ($item=~/\{(\d{12})\d{2},\w,\r*\n\{[0-9abcdef]+,[0-9abcdef]+\},\d+,\d+,[$id_1cv8c,$id_1cv8,$id_webc,$id_dsgnr],\d+,[$id_finish],/g);
     }
-    foreach $k (sort {$cnt{$b} <=> $cnt{$a}} keys %cnt) {
+    foreach $k(sort (keys(%cnt))){
         $ttl+=$cnt{$k};
         if ($k=~/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})/){
-            print $fout "$3.$2.$1 $4:$5:00,$ttl\r\n";
+            print $fout "$1.$2.$3 $4:$5:00,$ttl\r\n";
         }
     }
 }
-close($fout);
