@@ -22,7 +22,8 @@ perl -ne '
 ' | \
 perl -ne '{
     s/\r\n//g;
-    if(/t:connectID=7/ && /DBMSSQL/){
+    #if(/t:connectID=7/ && /DBMSSQL/){
+	if(/DBMSSQL/){
     #if(/time=17:[3-9][6]/){
         for (split /(?=\,\w+:*\w*=)/, $_){
             s/,//g;
