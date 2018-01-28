@@ -53,35 +53,34 @@ dir_walk($logs, \&process_file, sub{ print "Processing $_[0]\n"});
 my $dur_ttl;my %dur;my $cnt_ttl;my %cnt;my $k;
 log_it("Walk hash");
 foreach my $item(@events){
-  #print             "$item++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-  #print "$hash_data{$item}\n--------------------------------------------------------------\n";
-  #$z+=1;
-  #last if ($z eq 15);
-  #print "$this_item\n";
-  if($item=~/dur=(\d+),evnt=DBMSSQL.*Context=(.*)$/){
+    #print             "$item++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
+    #print "$hash_data{$item}\n--------------------------------------------------------------\n";
+    #$z+=1;
+    #last if ($z eq 15);
+    #print "$this_item\n";
+    if($item=~/dur=(\d+),evnt=DBMSSQL.*Context=(.*)$/){
         $dur_ttl+=$1/1000;
         $dur{$2}+=$1/1000;
         $cnt_ttl+=1;
         $cnt{$2}+=1;
     }
-    END{
-        printf("=====TIME TOTAL(ms):%.2f      COUNT:%d      AVG(ms):%.2f\r\n",
-            $dur_ttl,
-            $cnt_ttl,
-            $dur_ttl/(($cnt_ttl ge 1)?$cnt_ttl:1));                     #формирую заголовок
-        foreach $k (sort {$dur{$b} <=> $dur{$a}} keys %dur) { #сортирую массив по убыванию длительности и вывожу его
-            last if ($_+=1)>10;                     #но только первые 10 строк
-            printf "$_: [][][] TIME(ms):%d [][][] TIME(%):%.2f [][][] COUNT:%d [][][] COUNT(%):%.2f [][][] AVG(ms):%d [][][] BY:$k \r\n",
-            $dur{$k},                               #абсолютная продолжительность по контексту
-            $dur{$k}/($dur_ttl>0?$dur_ttl:1)*100,   #процент продолжительности по времени
-            $cnt{$k},                               #абсолютная количество по контексту
-            $cnt{$k}/($cnt_ttl>0?$cnt_ttl:1)*100,   #процент количества по контексту
-            $dur{$k}/$cnt{$k};                      #среднее время одного контекста
-        }
-    }
 }
+
+printf("=====TIME TOTAL(ms):%.2f      COUNT:%d      AVG(ms):%.2f\r\n",
+    $dur_ttl,
+    $cnt_ttl,
+    $dur_ttl/(($cnt_ttl ge 1)?$cnt_ttl:1));                     #формирую заголовок
+foreach $k (sort {$dur{$b} <=> $dur{$a}} keys %dur) { #сортирую массив по убыванию длительности и вывожу его
+    last if ($_+=1)>10;                     #но только первые 10 строк
+    printf "$_: [][][] TIME(ms):%d [][][] TIME(%):%.2f [][][] COUNT:%d [][][] COUNT(%):%.2f [][][] AVG(ms):%d [][][] BY:$k \r\n",
+    $dur{$k},                               #абсолютная продолжительность по контексту
+    $dur{$k}/($dur_ttl>0?$dur_ttl:1)*100,   #процент продолжительности по времени
+    $cnt{$k},                               #абсолютная количество по контексту
+    $cnt{$k}/($cnt_ttl>0?$cnt_ttl:1)*100,   #процент количества по контексту
+    $dur{$k}/$cnt{$k};                      #среднее время одного контекста
+}   
 my $tm = time - $^T;
-print "Job sec is $tm\n";
+log_it("Job sec is $tm\n");
 
 # From Higher-Order Perl by Mark Dominus, published by Morgan Kaufmann Publishers
 # Copyright 2005 by Elsevier Inc
