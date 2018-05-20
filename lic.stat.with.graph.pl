@@ -1,3 +1,4 @@
+use 5;
 use File::stat;
 use MIME::Base64 qw( decode_base64 );
 my $folder = '/C/1C/Ddd/zhu/erp/';#укажите каталог обрабатываемой базы

@@ -1,3 +1,4 @@
+use 5;
 use File::stat;
 my $folder = '/C/1C/Ddd/zhu/erp/';
 my $lgf = $folder.'1Cv8.lgf';

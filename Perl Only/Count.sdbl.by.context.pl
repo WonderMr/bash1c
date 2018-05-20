@@ -1,3 +1,4 @@
+use 5;
 use File::stat;
 use strict;
 #use warnings;
