@@ -1,5 +1,5 @@
 echo "Все события без фильтров"
-time grep -r ".*" -H /c/1c_info/logs/*/*.log  | \
+time grep -r ".*" -H /d/zhr/*/*.log  | \
 perl -ne '
     use 5;
     s/\xef\xbb\xbf//;                               #BOM - обязательно в начале, иначе с певой строкой будут проблемы
@@ -23,32 +23,6 @@ perl -ne '
 ' | \
 perl -ne '{
     use 5;
-    s/\r\n//g;
-    if(/t:connectID=7/ && /DBMSSQL/){
-    #if(/time=17:[3-9][6]/){
-        for (split /(?=\,\w+:*\w*=)/, $_){
-            s/,//g;
-            print "\r\n" if(/dt=/);
-			$_="{dt}" if(/dt=/);
-			$_="{ukn}" if(/ukn=/);
-			$_="{pid}" if(/pid=/);
-			$_="{prc}" if(/prc=/);
-			$_="{Interface}" if(/Interface=/);
-			$_="{IName}" if(/IName=/);
-			$_="{Method}" if(/Method=\d+/);			#сворачиваю только цифровые методы
-			$_="{CallID}" if(/CallID=/);
-			$_="{t:computerName}" if(/t:computerName=/);
-			$_="{MName}" if(/MName=/);
-			$_="{p:processName}" if(/p:processName=/);
-			$_="{process}" if(/process=/);
-			$_="{t:applicationName}" if(/t:applicationName=/);
-			$_="{OutBytes}" if(/OutBytes=/);
-			$_="{InBytes}" if(/InBytes=/);
-			$_="{Usr}" if(/Usr=/);
-			print $_."[]" if(/^{/);
-            print "[][][]     ".$_."     [][][]" if(!/^{/);
-        }
-    }
-}' |\
-sort |\
-head -n 1500
+    s/(,)([\w\:]+\=)/ \[\]\[\]\[\] $2/g;
+    print;
+}'
