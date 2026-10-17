@@ -1,0 +1,21 @@
+# bash1c
+
+> Bash and Perl scripts that analyse 1C:Enterprise 8.x technological logs (ТЖ) and event logs: top contexts by duration, exceptions, connections and license counts.
+
+bash1c aggregates 1C technological log events (`CALL`, `SDBL`, `DBMSSQL`, `EXCP`, `CONN`) with a `grep | perl | perl` pipeline and prints top-10 style reports; two Perl scripts count concurrent sessions per hour from the event log (`1Cv8.lgf`, `*.lgp`) and can render an HTML chart. Log paths are hardcoded per script. Written for Git Bash on Windows; unmaintained since 2019.
+
+## Docs
+
+- [README](https://github.com/WonderMr/bash1c/blob/master/README.md): script list, requirements and usage
+- [AGENTS.md](https://github.com/WonderMr/bash1c/blob/master/AGENTS.md): pipeline structure, conventions and gotchas for coding agents
+
+## Source
+
+- [STAT.SDBL.by.Context.sh](https://github.com/WonderMr/bash1c/blob/master/STAT.SDBL.by.Context.sh): reference example of the shared pipeline
+- [STAT.EXCP.by.Descr.sh](https://github.com/WonderMr/bash1c/blob/master/STAT.EXCP.by.Descr.sh): exceptions grouped by description
+- [lic.stat.pl](https://github.com/WonderMr/bash1c/blob/master/lic.stat.pl): concurrent sessions per hour from the event log
+- [Count.sdbl.by.context.pl](https://github.com/WonderMr/bash1c/blob/master/Perl%20Only/Count.sdbl.by.context.pl): pure-Perl variant
+
+## Optional
+
+- [lic.stat.with.graph.pl](https://github.com/WonderMr/bash1c/blob/master/lic.stat.with.graph.pl): session counts with an embedded Chart.js report
